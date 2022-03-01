@@ -184,4 +184,14 @@ class fastx3::configure {
       content => "HOST ${fastx3::license_server} 00000000 5053\n",
     }
   }
+  file { $fastx3::system_bookmark_store:
+    owner   => $fastx3::service_user,
+    group   => $fastx3::service_group,
+    mode    => $fastx3::json_mode,
+    content => '{}',
+    replace => false,
+  }
+  create_resources('fastx_system_bookmark',
+                   $fastx3::system_bookmarks,
+                   { require => File[$fastx3::system_bookmark_store] })
 }
