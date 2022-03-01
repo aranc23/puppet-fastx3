@@ -110,11 +110,11 @@ class fastx3
 (
   Array[String] $packages,
   Array[String] $services,
-  Variant[Enum['running','stopped'],Undef] $service_ensure,
-  Boolean $service_enabled,
-  Integer $www_port,
-  Variant[Stdlib::Fqdn,Stdlib::Host,Enum['']] $www_host,
-  Boolean $www_require_web_server,
+  Variant[Enum['running','stopped'],Undef] $service_ensure = running,
+  Boolean $service_enabled = true,
+  Integer $www_port = 3300,
+  Variant[Stdlib::Fqdn,Stdlib::Host,Enum['']] $www_host = '',
+  Boolean $www_require_web_server = true,
   Stdlib::Absolutepath $installdir,
   # the following are all based on installdir above
   Stdlib::Absolutepath $vardir,
@@ -127,9 +127,9 @@ class fastx3
   Stdlib::Absolutepath $www_json     = "${fastx3::configdir}/www.json",
   Stdlib::Absolutepath $settings_json = "${fastx3::configdir}/settings.json",
   Stdlib::Absolutepath $broker_json = "${fastx3::configdir}/broker.json",
-  String $service_user,
-  String $service_group,
-  Array[String] $admin_groups,
+  String $service_user = 'fastx',
+  String $service_group = 'fastx',
+  Array[String] $admin_groups = ['root'],
   # license server
   Optional[Stdlib::Fqdn] $license_server = undef,
   # options related to the certificates used

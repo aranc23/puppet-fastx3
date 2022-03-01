@@ -8,14 +8,7 @@ fastx3::packages:
 fastx3::services:
   - fastx3
 fastx3::service_ensure: 'running'
-fastx3::service_enabled: true
-fastx3::www_port: 3300
-fastx3::www_host: ''
-fastx3::www_require_web_server: true
-fastx3::pfx_file: ''
 fastx3::installdir: '/usr/lib/fastx'
 fastx3::vardir: '/var/fastx'
 fastx3::configdir: '/etc/fastx'
-fastx3::service_user: 'fastx'
-fastx3::service_group: 'fastx'
-fastx3::admin_groups: ['root']
+
