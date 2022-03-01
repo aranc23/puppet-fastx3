@@ -5,66 +5,59 @@ require 'puppet/resource_api/simple_provider'
 # Implementation for the fastx_system_bookmark type using the Resource API.
 class Puppet::Provider::FastxSystemBookmark::FastxSystemBookmark < Puppet::ResourceApi::SimpleProvider
   def initialize
-    # read /usr/lib/fastx/3/.env
-    # and look for FX_LOCAL_DIR in there or in the current environment
-    # then read all the entries from FX_LOCAL_DIR/store/system-bookmark-store.db
-    @store = '/var/fastx/local/store/system-bookmark-store.db'
-    super()
-  end
-  def get(context)
-    context.debug('Returning pre-canned example data XXX')
-    bookmarks = {}
-    context.debug("Using #{@store} for system bookmark database.")
-    File.readlines(@store).each do |ln|
+    # the .../install/suggestions script uses the following logic to
+    # find key directories: (converted from perl to ruby)
+    @fx_var_dir = ENV.key?('FX_VAR_DIR') ? ENV['FX_VAR_DIR'] : '/var/fastx'
+    @fx_local_dir = ENV.key?('FX_LOCAL_DIR') ? ENV['FX_LOCAL_DIR'] : File.join(@fx_var_dir,'local');
+    @fx_config_dir = ENV.key?('FX_CONFIG_DIR') ? ENV['FX_CONFIG_DIR'] : '/etc/fastx'
+    @bookmark_db = File.join(@fx_local_dir,'store','system-bookmark-store.db')
+
+    @bookmarks = {}
+    File.readlines(@bookmark_db).each do |ln|
       p = JSON.parse(ln)
       if p.key?('$$deleted') and p['$$deleted'] == true
-        if bookmarks.key?(p['_id'])
-          bookmarks.delete(p['_id'])
+        # if this entry is marked as deleted
+        if @bookmarks.key?(p['_id'])
+          @bookmarks.delete(p['_id'])
+          # delete it from the @bookmarks hash
         end
+        # skip to the next bookmark without adding it
         next
       end
-      bookmarks[p['_id']] = p
+      # create a hash using the _id key as the new hash key
+      @bookmarks[p['_id']] = p
     end
-    context.debug(bookmarks)
-    # convert to a list
+    # convert to a list to return
+    super()
+  end
+  def write_hash_to_db_as_json(hash)
+    # append to database file
+    open(@bookmark_db, 'a') do |f|
+      f.puts JSON.generate(hash)
+    end
+  end
+  def get(context)
+    # convert to a list to return
     list = []
-    bookmarks.each do |i,d|
+    @bookmarks.each do |i,d|
       list << { :name => i, :data => d['data'], :ensure => 'present' }
     end
     return list
   end
-
+  
   def create(context, name, should)
     context.notice("Creating '#{name}' with #{should.inspect}")
-    #context.notice(name)
-    #context.notice(should.inspect)
-
     hash = { '_id' => name, 'data' => should[:data] }
-    context.debug(hash)
-    json = JSON.generate(hash)
-    open(@store, 'a') do |f|
-      context.debug("about to write #{json}")
-      f.puts json
-    end
+    write_hash_to_db_as_json(hash)
   end
-
+  
   def update(context, name, should)
     context.notice("Updating '#{name}' with #{should.inspect}")
-    hash = { '_id' => name, 'data' => should[:data] }
-    context.debug(hash)
-    json = JSON.generate(hash)
-    open(@store, 'a') do |f|
-      context.debug("about to write #{json}")
-      f.puts json
-    end
+    write_hash_to_db_as_json( { '_id' => name, 'data' => should[:data] } )
   end
 
   def delete(context, name)
     context.notice("Deleting '#{name}'")
-    json = JSON.generate({ "_id" => name, "$$deleted" => true })
-    open(@store, 'a') do |f|
-      context.debug("about to write #{json}")
-      f.puts json
-    end
+    write_hash_to_db_as_json({ '_id' => name, '$$deleted' => true })
   end
 end
