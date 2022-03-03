@@ -184,6 +184,12 @@ class fastx3::configure {
       content => "HOST ${fastx3::license_server} 00000000 5053\n",
     }
   }
+  file { $fastx3::storedir:
+    ensure  => 'directory',
+    owner   => $fastx3::service_user,
+    group   => $fastx3::service_group,
+    mode    => '0755',
+  }
   file { $fastx3::system_bookmark_store:
     owner   => $fastx3::service_user,
     group   => $fastx3::service_group,

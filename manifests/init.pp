@@ -100,6 +100,8 @@
 #   called "Require Valid Cluster Certificates" in settings
 # @param sudo_user_options
 #   hover text from settings page: "Choose how the server will use sudo users"
+# @param storedir
+#   directory containing json database files
 # @param system_bookmark_store
 #   file to store system wide bookmarks in
 # @param system_bookmarks
@@ -156,7 +158,8 @@ class fastx3
   Boolean $force_indirect = false,
   Boolean $require_valid_certificates = false,
   Enum['Advertise','Enable','Disable'] $sudo_user_options = 'Disable',
-  Stdlib::AbsolutePath $system_bookmark_store = "${fastx3::localdir}/store/system-bookmark-store.db",
+  Stdlib::AbsolutePath $storedir = "${fastx3::localdir}/store",
+  Stdlib::AbsolutePath $system_bookmark_store = "${fastx3::storedir}/system-bookmark-store.db",
   Hash $system_bookmarks = {},
 )
 {
