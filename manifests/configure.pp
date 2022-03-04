@@ -39,7 +39,10 @@ class fastx3::configure {
     group   => $fastx3::service_group,
     mode    => $fastx3::json_mode,
     content => '{}',
-    replace => false,
+    replace => $fastx3::broker_json_ensure ? {
+      'present' => false,
+      'absent'  => true,
+    },
   }
   # only manage the contents if we are managing the file
   if $fastx3::broker_json_ensure == 'present' {
