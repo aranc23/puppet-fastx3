@@ -37,6 +37,8 @@
 #   full path to www.json config file
 # @param settings_json
 #   full path to settings.json file
+# @param broker_json
+#   full path to broker.json file used to configure cluster membership
 # @param service_user
 #   user services run as, used to create/modify directory permissions
 # @param service_group
@@ -58,10 +60,12 @@
 # @param interm
 #   create interm cert file?
 #   all the cert stuff probably belongs in a profile
+# @param broker_json_ensure
+#   create or remove the broker configuration
 # @param broker_namespace
 #   redis namespace for broker
 # @param broker_transporter_type
-#   transport type is a blank (don't use it?) or Redis
+#   if blank (empty string) fastx-server will not attempt to connect
 # @param broker_password
 #   use this password when connecting to the broker
 # @param broker_host
@@ -141,12 +145,14 @@ class fastx3
   String $key_file = '',
   String $pfx_file = '',
   # broker options
+  Enum['present','absent'] $broker_json_ensure = 'absent',
   String $broker_namespace = 'fastx-broker',
   Enum['','redis'] $broker_transporter_type = '',
   String $broker_password = '',
   Stdlib::Host $broker_host = 'localhost',
   Integer $broker_port = 6379,
   Boolean $broker_reject_unauthorized = false,
+  # end broker options
   Boolean $manage_debug_options = false,
   Stdlib::Absolutepath $debug_json = "${fastx3::configdir}/debug.json",
   Optional[Hash[String,Boolean]] $debug_options = {},
