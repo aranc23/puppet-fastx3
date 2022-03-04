@@ -190,19 +190,21 @@ class fastx3::configure {
     }
   }
   file { $fastx3::storedir:
-    ensure  => 'directory',
-    owner   => $fastx3::service_user,
-    group   => $fastx3::service_group,
-    mode    => '0755',
+    ensure => 'directory',
+    owner  => $fastx3::service_user,
+    group  => $fastx3::service_group,
+    mode   => '0755',
   }
   file { $fastx3::system_bookmark_store:
     owner   => $fastx3::service_user,
     group   => $fastx3::service_group,
     mode    => $fastx3::json_mode,
-    content => '{}',
+    content => '',
     replace => false,
   }
-  create_resources('fastx_system_bookmark',
-                   $fastx3::system_bookmarks,
-                   { require => File[$fastx3::system_bookmark_store] })
+  create_resources(
+    'fastx_system_bookmark',
+    $fastx3::system_bookmarks,
+    { require => File[$fastx3::system_bookmark_store] }
+  )
 }
