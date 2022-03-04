@@ -1,6 +1,6 @@
 {
   "name": "aranc23-fastx3",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": "Aran Cox",
   "summary": "install and configure fastx3 service",
   "license": "Apache-2.0",
