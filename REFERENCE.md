@@ -11,6 +11,7 @@
 * [`fastx3::directories`](#fastx3directories): create directories for use later
 * [`fastx3::install`](#fastx3install): A short summary of the purpose of this class
 * [`fastx3::provision`](#fastx3provision)
+* [`fastx3::repos`](#fastx3repos): create yum repositories, if configured
 * [`fastx3::service`](#fastx3service): A short summary of the purpose of this class
 * [`fastx3::users`](#fastx3users): A short summary of the purpose of this class
 
@@ -85,6 +86,8 @@ The following parameters are available in the `fastx3` class:
 * [`storedir`](#storedir)
 * [`system_bookmark_store`](#system_bookmark_store)
 * [`system_bookmarks`](#system_bookmarks)
+* [`manage_repos`](#manage_repos)
+* [`yumrepos`](#yumrepos)
 * [`pfx_file`](#pfx_file)
 * [`manage_debug_options`](#manage_debug_options)
 * [`sshport`](#sshport)
@@ -462,6 +465,22 @@ create these bookmarks
 
 Default value: `{}`
 
+##### <a name="manage_repos"></a>`manage_repos`
+
+Data type: `Boolean`
+
+manage repos as specified in yum_repos
+
+Default value: ``true``
+
+##### <a name="yumrepos"></a>`yumrepos`
+
+Data type: `Hash`
+
+hash of yumrepo resources for creating/deleting/modifiying, if manage_repos is true
+
+Default value: `{}`
+
 ##### <a name="pfx_file"></a>`pfx_file`
 
 Data type: `String`
@@ -525,6 +544,10 @@ include fastx3::install
 ### <a name="fastx3provision"></a>`fastx3::provision`
 
 The fastx3::provision class.
+
+### <a name="fastx3repos"></a>`fastx3::repos`
+
+create yum repositories, if configured
 
 ### <a name="fastx3service"></a>`fastx3::service`
 
