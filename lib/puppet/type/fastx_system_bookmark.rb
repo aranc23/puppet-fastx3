@@ -7,8 +7,9 @@ Puppet::ResourceApi.register_type(
   docs: <<-EOS,
 @summary a fastx_system_bookmark type
 @example
-fastx_system_bookmark { 'foo':
+fastx_system_bookmark { 'xterm':
   ensure => 'present',
+  data   => { 'command' => 'xterm -ls', name => 'xterm' },
 }
 
 This type provides Puppet with the capabilities to manage local system bookmarks stored in system-bookmark-store.db
@@ -28,7 +29,7 @@ EOS
     },
     data: {
       type: 'Hash',
-      desc: 'Place into the data elem.',
+      desc: 'Place into the data portion of the json hash, see the fastx documenation for details or examples in the data directory.',
       default: nil,
     },
   },
