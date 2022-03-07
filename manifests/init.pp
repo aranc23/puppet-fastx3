@@ -95,6 +95,8 @@
 #   the authenticating list. Once the user has logged in, the user
 #   checks if he is in the authenticating list. Then the list is
 #   cleared. Authentication will fail for all other users.
+# @param sshport
+#   which port to connect to for logins
 # @param force_indirect
 #   called "Disable Direct Cluster Connections" in settings
 # @param require_valid_certificates
