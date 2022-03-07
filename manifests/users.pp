@@ -1,9 +1,6 @@
-# @summary A short summary of the purpose of this class
+# @summary manage fastx3 service user and group
 #
-# A description of what this class does
-#
-# @example
-#   include fastx3
+# Internal, not used directly.
 class fastx3::users {
   group { $fastx3::service_group: ensure => present }
   -> user { $fastx3::service_user:

@@ -1,9 +1,6 @@
-# @summary create directories for use later
+# @summary manage directory permissions, fix version link if needed
 #
-# A description of what this class does
-#
-# @example
-#   include fastx3::configure
+# Internal, not used directly.
 class fastx3::directories {
   # directories:
   file { "${fastx3::installdir}/latest":

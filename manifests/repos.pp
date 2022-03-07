@@ -1,4 +1,6 @@
-# create yum repositories, if configured
+# @summary create yum repositories, if configured
+#
+# Internal, not used directly.
 class fastx3::repos
 {
   if $fastx3::manage_repos {

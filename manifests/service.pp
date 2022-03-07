@@ -1,9 +1,6 @@
-# @summary A short summary of the purpose of this class
+# @summary reset the local admins list on changes and manage the service
 #
-# A description of what this class does
-#
-# @example
-#   include fastx3::service
+# Internal, not used directly.
 class fastx3::service {
   $admins = join($::fastx3::admin_groups, ' ')
   exec { "/usr/lib/fastx/3/tools/reset-admin ${admins}":

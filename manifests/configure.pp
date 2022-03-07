@@ -1,9 +1,6 @@
-# @summary A short summary of the purpose of this class
+# @summary configures various fastx3 config files including license file
 #
-# A description of what this class does
-#
-# @example
-#   include fastx3::configure
+# Internal, not used directly.
 class fastx3::configure {
   # configure the web server portion:
   file { $fastx3::www_json:

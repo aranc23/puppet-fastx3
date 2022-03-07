@@ -1,9 +1,7 @@
-# @summary A short summary of the purpose of this class
+# @summary install fastx3 packages
 #
-# A description of what this class does
-#
-# @example
-#   include fastx3::install
+# Internal, not used directly.
+
 class fastx3::install {
   ensure_packages($fastx3::packages)
 }
