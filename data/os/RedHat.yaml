@@ -1,5 +1,5 @@
 ---
-yum_repos:
+fastx3::yum_repos:
   starnet:
     descr: StarNet Repository
     baseurl: https://www.starnet.com/files/private/starnet-repo/stable/
