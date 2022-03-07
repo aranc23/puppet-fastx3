@@ -50,18 +50,36 @@ class Puppet::Provider::FastxSystemBookmark::FastxSystemBookmark < Puppet::Resou
     end
     return list
   end
-  
+  # creates a new resource after munging data into db format
+  # @param context
+  #   context used for logging, etc.
+  # @param name
+  #   name of the resource to create
+  # @param should
+  #   resource params to create
   def create(context, name, should)
     context.notice("Creating '#{name}' with #{should.inspect}")
     hash = { '_id' => name, 'data' => should[:data] }
     write_hash_to_db_as_json(hash)
   end
   
+  # updates a resource after munging data into db format
+  # @param context
+  #   context used for logging, etc.
+  # @param name
+  #   name of the resource to update
+  # @param should
+  #   resource params to write out
   def update(context, name, should)
     context.notice("Updating '#{name}' with #{should.inspect}")
     write_hash_to_db_as_json( { '_id' => name, 'data' => should[:data] } )
   end
 
+  # delets a resource by creating a special deleted entry
+  # @param context
+  #   context used for logging, etc.
+  # @param name
+  #   name of the resource to mark as deleted
   def delete(context, name)
     context.notice("Deleting '#{name}'")
     write_hash_to_db_as_json({ '_id' => name, '$$deleted' => true })
