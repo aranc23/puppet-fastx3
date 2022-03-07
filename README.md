@@ -50,9 +50,9 @@ custom type (fastx_system_bookmark) but there is a class parameter for
 creating system bookmarks witih default values for common desktop
 environments.
 
-  class { '::fastx3':
-    admin_groups => ['root','unix-admins'],
-  }
+    class { '::fastx3':
+      admin_groups => ['root','unix-admins'],
+    }
 
 ## Limitations
 
