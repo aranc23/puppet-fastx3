@@ -1,0 +1,9 @@
+---
+yum_repos:
+  starnet:
+    descr: StarNet Repository
+    baseurl: https://www.starnet.com/files/private/starnet-repo/stable/
+    repo_gpgcheck: 1
+    gpgkey: https://www.starnet.com/files/keys/starnet-key.pub
+    gpgcheck: 1
+    enabled: 1

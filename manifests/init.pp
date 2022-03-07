@@ -167,15 +167,19 @@ class fastx3
   Stdlib::AbsolutePath $storedir = "${fastx3::localdir}/store",
   Stdlib::AbsolutePath $system_bookmark_store = "${fastx3::storedir}/system-bookmark-store.db",
   Hash $system_bookmarks = {},
+  Boolean $manage_repo = true,
+  Hash $yum_repos = {},
 )
 {
   include ::stdlib
+  contain fastx3::repos
   contain fastx3::install
   contain fastx3::users
   contain fastx3::directories
   contain fastx3::configure
   contain fastx3::service
-  Class['::fastx3::install']
+  Class['::fastx3::repos']
+  -> Class['::fastx3::install']
   -> Class['::fastx3::users']
   -> Class['::fastx3::directories']
   -> Class['::fastx3::configure']
