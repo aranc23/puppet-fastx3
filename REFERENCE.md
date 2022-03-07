@@ -7,13 +7,12 @@
 ### Classes
 
 * [`fastx3`](#fastx3): install and configure the fastx3.2 server package
-* [`fastx3::configure`](#fastx3configure): A short summary of the purpose of this class
-* [`fastx3::directories`](#fastx3directories): create directories for use later
-* [`fastx3::install`](#fastx3install): A short summary of the purpose of this class
-* [`fastx3::provision`](#fastx3provision)
+* [`fastx3::configure`](#fastx3configure): configures various fastx3 config files including license file
+* [`fastx3::directories`](#fastx3directories): manage directory permissions, fix version link if needed
+* [`fastx3::install`](#fastx3install): install fastx3 packages
 * [`fastx3::repos`](#fastx3repos): create yum repositories, if configured
-* [`fastx3::service`](#fastx3service): A short summary of the purpose of this class
-* [`fastx3::users`](#fastx3users): A short summary of the purpose of this class
+* [`fastx3::service`](#fastx3service): reset the local admins list on changes and manage the service
+* [`fastx3::users`](#fastx3users): manage fastx3 service user and group
 
 ### Resource types
 
@@ -64,8 +63,7 @@ The following parameters are available in the `fastx3` class:
 * [`cert_file`](#cert_file)
 * [`ca_file`](#ca_file)
 * [`key_file`](#key_file)
-* [`pfs_file`](#pfs_file)
-* [`interm`](#interm)
+* [`pfx_file`](#pfx_file)
 * [`broker_json_ensure`](#broker_json_ensure)
 * [`broker_namespace`](#broker_namespace)
 * [`broker_transporter_type`](#broker_transporter_type)
@@ -73,13 +71,14 @@ The following parameters are available in the `fastx3` class:
 * [`broker_host`](#broker_host)
 * [`broker_port`](#broker_port)
 * [`broker_reject_unauthorized`](#broker_reject_unauthorized)
-* [`manage_debug_json`](#manage_debug_json)
+* [`manage_debug_options`](#manage_debug_options)
 * [`debug_json`](#debug_json)
 * [`debug_options`](#debug_options)
 * [`override_hostname`](#override_hostname)
 * [`allow_logins`](#allow_logins)
 * [`allow_start`](#allow_start)
 * [`enable_server_reservations`](#enable_server_reservations)
+* [`sshport`](#sshport)
 * [`force_indirect`](#force_indirect)
 * [`require_valid_certificates`](#require_valid_certificates)
 * [`sudo_user_options`](#sudo_user_options)
@@ -88,9 +87,6 @@ The following parameters are available in the `fastx3` class:
 * [`system_bookmarks`](#system_bookmarks)
 * [`manage_repos`](#manage_repos)
 * [`yumrepos`](#yumrepos)
-* [`pfx_file`](#pfx_file)
-* [`manage_debug_options`](#manage_debug_options)
-* [`sshport`](#sshport)
 
 ##### <a name="packages"></a>`packages`
 
@@ -290,14 +286,13 @@ name of key file to create
 
 Default value: `''`
 
-##### <a name="pfs_file"></a>`pfs_file`
+##### <a name="pfx_file"></a>`pfx_file`
+
+Data type: `String`
 
 name of the pfx file to configure in www.json
 
-##### <a name="interm"></a>`interm`
-
-create interm cert file?
-all the cert stuff probably belongs in a profile
+Default value: `''`
 
 ##### <a name="broker_json_ensure"></a>`broker_json_ensure`
 
@@ -355,9 +350,13 @@ not documented
 
 Default value: ``false``
 
-##### <a name="manage_debug_json"></a>`manage_debug_json`
+##### <a name="manage_debug_options"></a>`manage_debug_options`
+
+Data type: `Boolean`
 
 should this module manage the debug.json file
+
+Default value: ``false``
 
 ##### <a name="debug_json"></a>`debug_json`
 
@@ -416,6 +415,14 @@ checks if he is in the authenticating list. Then the list is
 cleared. Authentication will fail for all other users.
 
 Default value: ``false``
+
+##### <a name="sshport"></a>`sshport`
+
+Data type: `Integer`
+
+which port to connect to for logins
+
+Default value: `22`
 
 ##### <a name="force_indirect"></a>`force_indirect`
 
@@ -481,104 +488,37 @@ hash of yumrepo resources for creating/deleting/modifiying, if manage_repos is t
 
 Default value: `{}`
 
-##### <a name="pfx_file"></a>`pfx_file`
-
-Data type: `String`
-
-
-
-Default value: `''`
-
-##### <a name="manage_debug_options"></a>`manage_debug_options`
-
-Data type: `Boolean`
-
-
-
-Default value: ``false``
-
-##### <a name="sshport"></a>`sshport`
-
-Data type: `Integer`
-
-
-
-Default value: `22`
-
 ### <a name="fastx3configure"></a>`fastx3::configure`
 
-A description of what this class does
-
-#### Examples
-
-##### 
-
-```puppet
-include fastx3::configure
-```
+Internal, not used directly.
 
 ### <a name="fastx3directories"></a>`fastx3::directories`
 
-A description of what this class does
-
-#### Examples
-
-##### 
-
-```puppet
-include fastx3::configure
-```
+Internal, not used directly.
 
 ### <a name="fastx3install"></a>`fastx3::install`
 
-A description of what this class does
-
-#### Examples
-
-##### 
-
-```puppet
-include fastx3::install
-```
-
-### <a name="fastx3provision"></a>`fastx3::provision`
-
-The fastx3::provision class.
+Internal, not used directly.
 
 ### <a name="fastx3repos"></a>`fastx3::repos`
 
-create yum repositories, if configured
+Internal, not used directly.
 
 ### <a name="fastx3service"></a>`fastx3::service`
 
-A description of what this class does
-
-#### Examples
-
-##### 
-
-```puppet
-include fastx3::service
-```
+Internal, not used directly.
 
 ### <a name="fastx3users"></a>`fastx3::users`
 
-A description of what this class does
-
-#### Examples
-
-##### 
-
-```puppet
-include fastx3
-```
+Internal, not used directly.
 
 ## Resource types
 
 ### <a name="fastx_system_bookmark"></a>`fastx_system_bookmark`
 
-fastx_system_bookmark { 'foo':
+fastx_system_bookmark { 'xterm':
   ensure => 'present',
+  data   => { 'command' => 'xterm -ls', name => 'xterm' },
 }
 
 This type provides Puppet with the capabilities to manage local system bookmarks stored in system-bookmark-store.db
@@ -591,7 +531,7 @@ The following properties are available in the `fastx_system_bookmark` type.
 
 Data type: `Hash`
 
-Place into the data elem.
+Place into the data portion of the json hash, see the fastx documenation for details or examples in the data directory.
 
 ##### `ensure`
 
