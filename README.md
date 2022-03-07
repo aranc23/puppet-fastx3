@@ -1,10 +1,7 @@
 # fastx3
 
-Welcome to your new module. A short overview of the generated parts can be found
-in the [PDK documentation][1].
-
-The README template below provides a starting point with details about what
-information to include in your README.
+Install fastx3 (presumed to be available via an external repo, already
+configured or previously installed) and configure the service.
 
 ## Table of Contents
 
@@ -19,99 +16,56 @@ information to include in your README.
 
 ## Description
 
-Briefly tell users why they might want to use your module. Explain what your
-module does and what kind of problems users can solve with it.
-
-This should be a fairly short description helps the user decide if your module
-is what they want.
+If you need to configure www, broker, or system bookmarks settings for
+fastx3 this module will do that.
 
 ## Setup
 
-### What fastx3 affects **OPTIONAL**
+### What fastx3 affects
 
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
+Installing the fastx-server package may cause other packages to be
+installed.  This module will not adjust the firewall or install
+certificates for the service.  It will enable and start the service
+(by default.)
 
-If there's more that they should know about, though, this is the place to
-mention:
+### Setup Requirements
 
-* Files, packages, services, or operations that the module will alter, impact,
-  or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled,
-another module, etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section here.
+None.
 
 ### Beginning with fastx3
 
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most basic
-use of the module.
+It should install and start fastx, provided the package is available
+using self-signed certs and creating some common system bookmarks
+which may or may not work on any given system.  The module does not
+try to determine which desktop environments are installed to create
+bookmarks for.
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your
-users how to use your module to solve problems, and be sure to include code
-examples. Include three to five examples of the most important or common tasks a
-user can accomplish with your module. Show users how to accomplish more complex
-tasks that involve different types, classes, and functions working in tandem.
+Since the module exposes most/all of the parameters in the www.json
+and broker.json file in addition to debug options and system bookmarks
+via class parameters it should be fairly obvious how to configure the
+module to configure fastx.  System bookmarks are managed using a
+custom type (fastx_system_bookmark) but there is a class parameter for
+creating system bookmarks witih default values for common desktop
+environments.
 
-## Reference
-
-This section is deprecated. Instead, add reference information to your code as
-Puppet Strings comments, and then use Strings to generate a REFERENCE.md in your
-module. For details on how to add code comments and generate documentation with
-Strings, see the [Puppet Strings documentation][2] and [style guide][3].
-
-If you aren't ready to use Strings yet, manually create a REFERENCE.md in the
-root of your module directory and list out each of your module's classes,
-defined types, facts, functions, Puppet tasks, task plans, and resource types
-and providers, along with the parameters for each.
-
-For each element (class, defined type, function, and so on), list:
-
-* The data type, if applicable.
-* A description of what the element does.
-* Valid values, if the data type doesn't make it obvious.
-* Default value, if any.
-
-For example:
-
-```
-### `pet::cat`
-
-#### Parameters
-
-##### `meow`
-
-Enables vocalization in your cat. Valid options: 'string'.
-
-Default: 'medium-loud'.
-```
+  class { '::fastx3':
+    admin_groups => ['root','unix-admins'],
+  }
 
 ## Limitations
 
-In the Limitations section, list any incompatibilities, known issues, or other
-warnings.
+There are a variety of configuration options stored in the JSONL
+"database" format that this module does not know how to configure.
+There are also some undocumented paramaters in the json configuration
+files that will appear when editing options via the web interface.
+
+This module will likely conflict with installs of FastX2 especially if
+the same user name is used.  The service_user and service_group are
+class parameters but changing them might not actually work.
 
 ## Development
 
-In the Development section, tell other users the ground rules for contributing
-to your project and how they should submit their work.
+Submit a pull request if you have useful changes.
 
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You can also add any additional sections you feel are
-necessary or important to include here. Please use the `##` header.
-
-[1]: https://puppet.com/docs/pdk/latest/pdk_generating_modules.html
-[2]: https://puppet.com/docs/puppet/latest/puppet_strings.html
-[3]: https://puppet.com/docs/puppet/latest/puppet_strings_style.html
