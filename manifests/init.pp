@@ -112,8 +112,8 @@
 #   create these bookmarks
 # @param manage_repos
 #   manage repos as specified in yum_repos
-# @param yum_repos
-#   hash of yum_repos for creating/deleting/modifiying, if manage_repos is true
+# @param yumrepos
+#   hash of yumrepo resources for creating/deleting/modifiying, if manage_repos is true
 # @example
 #   include fastx3
 class fastx3
@@ -172,7 +172,7 @@ class fastx3
   Stdlib::AbsolutePath $system_bookmark_store = "${fastx3::storedir}/system-bookmark-store.db",
   Hash $system_bookmarks = {},
   Boolean $manage_repos = true,
-  Hash $yum_repos = {},
+  Hash $yumrepos = {},
 )
 {
   include ::stdlib
