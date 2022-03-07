@@ -4,6 +4,7 @@ require 'puppet/resource_api/simple_provider'
 
 # Implementation for the fastx_system_bookmark type using the Resource API.
 class Puppet::Provider::FastxSystemBookmark::FastxSystemBookmark < Puppet::ResourceApi::SimpleProvider
+  # @summary opens and reads the system-bookmark-store.db
   def initialize
     # the .../install/suggestions script uses the following logic to
     # find key directories: (converted from perl to ruby)
