@@ -55,11 +55,8 @@
 #   name of key file to create
 # @param key_file
 #   name of key file to create
-# @param pfs_file
+# @param pfx_file
 #   name of the pfx file to configure in www.json
-# @param interm
-#   create interm cert file?
-#   all the cert stuff probably belongs in a profile
 # @param broker_json_ensure
 #   create or remove the broker configuration
 # @param broker_namespace
@@ -74,7 +71,7 @@
 #   port to connect to
 # @param broker_reject_unauthorized
 #   not documented
-# @param manage_debug_json
+# @param manage_debug_options
 #   should this module manage the debug.json file
 # @param debug_json
 #   path to debug.json file
