@@ -46,7 +46,7 @@ class Puppet::Provider::FastxConfig::FastxConfig < Puppet::ResourceApi::SimplePr
   def get(context)
     list = []
     @configs.each do |i,d|
-      list << { :name => i, :data => d['data'], :ensure => 'present' }
+      list << { :name => i, :ensure => 'present', :data => d.select {|k,v| k != '_id' } }
     end
     return list
   end
@@ -59,8 +59,7 @@ class Puppet::Provider::FastxConfig::FastxConfig < Puppet::ResourceApi::SimplePr
   #   resource params to create
   def create(context, name, should)
     context.notice("Creating '#{name}' with #{should.inspect}")
-    hash = { '_id' => name, 'data' => should[:data] }
-    write_hash_to_db_as_json(hash)
+    update(context,name,should)
   end
   
   # updates a resource after munging data into db format
@@ -72,7 +71,11 @@ class Puppet::Provider::FastxConfig::FastxConfig < Puppet::ResourceApi::SimplePr
   #   resource params to write out
   def update(context, name, should)
     context.notice("Updating '#{name}' with #{should.inspect}")
-    write_hash_to_db_as_json( { '_id' => name, 'data' => should[:data] } )
+    jhash = { '_id' => name }
+    should[:data].each do |k,v|
+      jhash[k.to_s] = v
+    end
+    write_hash_to_db_as_json( jhash )
   end
 
   # delets a resource by creating a special deleted entry
