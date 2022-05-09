@@ -7,8 +7,9 @@ Puppet::ResourceApi.register_type(
   docs: <<-EOS,
 @summary a fastx_config type
 @example
-fastx_config { 'foo':
+fastx_config { 'motd':
   ensure => 'present',
+  data   => { 'motd' => "no service available" },
 }
 
 This type provides Puppet with the capabilities to manage ...
@@ -27,8 +28,13 @@ EOS
     },
     name: {
       type: 'String',
-      desc: 'The name of the resource you want to manage.',
+      desc: 'The name of the resource you want to manage, used as the _id in the db.',
       behaviour: :namevar,
+    },
+    data: {
+      type: 'Hash',
+      desc: 'Place into the data portion of the json hash, see the fastx documenation for details or examples in the data directory.',
+      default: nil,
     },
   },
 )
