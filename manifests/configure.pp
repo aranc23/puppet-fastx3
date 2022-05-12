@@ -195,7 +195,7 @@ class fastx3::configure {
     group  => $fastx3::service_group,
     mode   => '0755',
   }
-  file { $fastx3::system_bookmark_store:
+  file { [$fastx3::system_bookmark_store,$fastx3::config_store]:
     owner   => $fastx3::service_user,
     group   => $fastx3::service_group,
     mode    => $fastx3::json_mode,

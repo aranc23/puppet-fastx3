@@ -107,6 +107,8 @@
 #   directory containing json database files
 # @param system_bookmark_store
 #   file to store system wide bookmarks in
+# @param config_store
+#   file to store configuration parameters created with fastx_config resources
 # @param system_bookmarks
 #   create these bookmarks
 # @param manage_repos
@@ -169,6 +171,7 @@ class fastx3
   Enum['Advertise','Enable','Disable'] $sudo_user_options = 'Disable',
   Stdlib::AbsolutePath $storedir = "${fastx3::localdir}/store",
   Stdlib::AbsolutePath $system_bookmark_store = "${fastx3::storedir}/system-bookmark-store.db",
+  Stdlib::AbsolutePath $config_store = "${fastx3::storedir}/config-store.db",
   Hash $system_bookmarks = {},
   Boolean $manage_repos = true,
   Hash $yumrepos = {},
