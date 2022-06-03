@@ -16,6 +16,7 @@
 
 ### Resource types
 
+* [`fastx_config`](#fastx_config): a fastx_config type
 * [`fastx_system_bookmark`](#fastx_system_bookmark): a fastx_system_bookmark type
 
 ## Classes
@@ -55,6 +56,7 @@ The following parameters are available in the `fastx3` class:
 * [`www_json`](#www_json)
 * [`settings_json`](#settings_json)
 * [`broker_json`](#broker_json)
+* [`db_json`](#db_json)
 * [`service_user`](#service_user)
 * [`service_group`](#service_group)
 * [`admin_groups`](#admin_groups)
@@ -65,12 +67,8 @@ The following parameters are available in the `fastx3` class:
 * [`key_file`](#key_file)
 * [`pfx_file`](#pfx_file)
 * [`broker_json_ensure`](#broker_json_ensure)
-* [`broker_namespace`](#broker_namespace)
-* [`broker_transporter_type`](#broker_transporter_type)
-* [`broker_password`](#broker_password)
-* [`broker_host`](#broker_host)
-* [`broker_port`](#broker_port)
-* [`broker_reject_unauthorized`](#broker_reject_unauthorized)
+* [`broker_configuration`](#broker_configuration)
+* [`db_configuration`](#db_configuration)
 * [`manage_debug_options`](#manage_debug_options)
 * [`debug_json`](#debug_json)
 * [`debug_options`](#debug_options)
@@ -84,9 +82,11 @@ The following parameters are available in the `fastx3` class:
 * [`sudo_user_options`](#sudo_user_options)
 * [`storedir`](#storedir)
 * [`system_bookmark_store`](#system_bookmark_store)
+* [`config_store`](#config_store)
 * [`system_bookmarks`](#system_bookmarks)
 * [`manage_repos`](#manage_repos)
 * [`yumrepos`](#yumrepos)
+* [`db_json_ensure`](#db_json_ensure)
 
 ##### <a name="packages"></a>`packages`
 
@@ -222,6 +222,14 @@ full path to broker.json file used to configure cluster membership
 
 Default value: `"${fastx3::configdir}/broker.json"`
 
+##### <a name="db_json"></a>`db_json`
+
+Data type: `Stdlib::Absolutepath`
+
+full path to db.json file used to configure cluster database
+
+Default value: `"${fastx3::configdir}/db.json"`
+
 ##### <a name="service_user"></a>`service_user`
 
 Data type: `String`
@@ -302,53 +310,21 @@ create or remove the broker configuration
 
 Default value: `'absent'`
 
-##### <a name="broker_namespace"></a>`broker_namespace`
+##### <a name="broker_configuration"></a>`broker_configuration`
 
-Data type: `String`
+Data type: `Hash`
 
-redis namespace for broker
+write this data structure to broker_json
 
-Default value: `'fastx-broker'`
+Default value: `{}`
 
-##### <a name="broker_transporter_type"></a>`broker_transporter_type`
+##### <a name="db_configuration"></a>`db_configuration`
 
-Data type: `Enum['','redis']`
+Data type: `Hash`
 
-if blank (empty string) fastx-server will not attempt to connect
+write this data structure to db_json
 
-Default value: `''`
-
-##### <a name="broker_password"></a>`broker_password`
-
-Data type: `String`
-
-use this password when connecting to the broker
-
-Default value: `''`
-
-##### <a name="broker_host"></a>`broker_host`
-
-Data type: `Stdlib::Host`
-
-broker host to connect to
-
-Default value: `'localhost'`
-
-##### <a name="broker_port"></a>`broker_port`
-
-Data type: `Integer`
-
-port to connect to
-
-Default value: `6379`
-
-##### <a name="broker_reject_unauthorized"></a>`broker_reject_unauthorized`
-
-Data type: `Boolean`
-
-not documented
-
-Default value: ``false``
+Default value: `{}`
 
 ##### <a name="manage_debug_options"></a>`manage_debug_options`
 
@@ -464,6 +440,14 @@ file to store system wide bookmarks in
 
 Default value: `"${fastx3::storedir}/system-bookmark-store.db"`
 
+##### <a name="config_store"></a>`config_store`
+
+Data type: `Stdlib::AbsolutePath`
+
+file to store configuration parameters created with fastx_config resources
+
+Default value: `"${fastx3::storedir}/config-store.db"`
+
 ##### <a name="system_bookmarks"></a>`system_bookmarks`
 
 Data type: `Hash`
@@ -487,6 +471,14 @@ Data type: `Hash`
 hash of yumrepo resources for creating/deleting/modifiying, if manage_repos is true
 
 Default value: `{}`
+
+##### <a name="db_json_ensure"></a>`db_json_ensure`
+
+Data type: `Enum['present','absent']`
+
+
+
+Default value: `'absent'`
 
 ### <a name="fastx3configure"></a>`fastx3::configure`
 
@@ -513,6 +505,52 @@ Internal, not used directly.
 Internal, not used directly.
 
 ## Resource types
+
+### <a name="fastx_config"></a>`fastx_config`
+
+fastx_config { 'motd':
+  ensure => 'present',
+  data   => { 'motd' => "no service available" },
+}
+
+This type provides Puppet with the capabilities to manage ...
+
+If your type uses autorequires, please document as shown below, else delete
+these lines.
+**Autorequires**:
+* `Package[foo]`
+
+#### Properties
+
+The following properties are available in the `fastx_config` type.
+
+##### `data`
+
+Data type: `Hash`
+
+Place into the data portion of the json hash, see the fastx documenation for details or examples in the data directory.
+
+##### `ensure`
+
+Data type: `Enum[present, absent]`
+
+Whether this resource should be present or absent on the target system.
+
+Default value: `present`
+
+#### Parameters
+
+The following parameters are available in the `fastx_config` type.
+
+* [`name`](#name)
+
+##### <a name="name"></a>`name`
+
+namevar
+
+Data type: `String`
+
+The name of the resource you want to manage, used as the _id in the db.
 
 ### <a name="fastx_system_bookmark"></a>`fastx_system_bookmark`
 

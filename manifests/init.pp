@@ -39,6 +39,8 @@
 #   full path to settings.json file
 # @param broker_json
 #   full path to broker.json file used to configure cluster membership
+# @param db_json
+#   full path to db.json file used to configure cluster database
 # @param service_user
 #   user services run as, used to create/modify directory permissions
 # @param service_group
@@ -59,18 +61,10 @@
 #   name of the pfx file to configure in www.json
 # @param broker_json_ensure
 #   create or remove the broker configuration
-# @param broker_namespace
-#   redis namespace for broker
-# @param broker_transporter_type
-#   if blank (empty string) fastx-server will not attempt to connect
-# @param broker_password
-#   use this password when connecting to the broker
-# @param broker_host
-#   broker host to connect to
-# @param broker_port
-#   port to connect to
-# @param broker_reject_unauthorized
-#   not documented
+# @param broker_configuration
+#   write this data structure to broker_json
+# @param db_configuration
+#   write this data structure to db_json
 # @param manage_debug_options
 #   should this module manage the debug.json file
 # @param debug_json
@@ -138,6 +132,7 @@ class fastx3
   Stdlib::Absolutepath $www_json     = "${fastx3::configdir}/www.json",
   Stdlib::Absolutepath $settings_json = "${fastx3::configdir}/settings.json",
   Stdlib::Absolutepath $broker_json = "${fastx3::configdir}/broker.json",
+  Stdlib::Absolutepath $db_json = "${fastx3::configdir}/db.json",
   String $service_user = 'fastx',
   String $service_group = 'fastx',
   Array[String] $admin_groups = ['root'],
@@ -149,15 +144,10 @@ class fastx3
   String $ca_file = '',
   String $key_file = '',
   String $pfx_file = '',
-  # broker options
   Enum['present','absent'] $broker_json_ensure = 'absent',
-  String $broker_namespace = 'fastx-broker',
-  Enum['','redis'] $broker_transporter_type = '',
-  String $broker_password = '',
-  Stdlib::Host $broker_host = 'localhost',
-  Integer $broker_port = 6379,
-  Boolean $broker_reject_unauthorized = false,
-  # end broker options
+  Enum['present','absent'] $db_json_ensure = 'absent',
+  Hash $broker_configuration = {},
+  Hash $db_configuration = {},
   Boolean $manage_debug_options = false,
   Stdlib::Absolutepath $debug_json = "${fastx3::configdir}/debug.json",
   Optional[Hash[String,Boolean]] $debug_options = {},

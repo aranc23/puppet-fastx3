@@ -35,33 +35,14 @@ class fastx3::configure {
     owner   => $fastx3::service_user,
     group   => $fastx3::service_group,
     mode    => $fastx3::json_mode,
-    content => '{}',
-    replace => $fastx3::broker_json_ensure ? {
-      'present' => false,
-      'absent'  => true,
-    },
+    content => to_json($fastx3::broker_configuration),
   }
-  # only manage the contents if we are managing the file
-  if $fastx3::broker_json_ensure == 'present' {
-    augeas { 'fastx-broker':
-      require => File[$fastx3::broker_json],
-      lens    => 'Json.lns',
-      incl    => $fastx3::broker_json,
-      changes => [
-        "set dict/entry[.= 'namespace'] 'namespace'",
-        "set dict/entry[.= 'namespace']/string ${fastx3::broker_namespace}",
-        "set dict/entry[.= 'transporterType'] 'transporterType'",
-        "set dict/entry[.= 'transporterType']/string '${fastx3::broker_transporter_type}'",
-        "set dict/entry[.= 'password'] 'password'",
-        "set dict/entry[.= 'password']/string '${fastx3::broker_password}'",
-        "set dict/entry[.= 'host'] 'host'",
-        "set dict/entry[.= 'host']/string '${fastx3::broker_host}'",
-        "set dict/entry[.= 'port'] 'port'",
-        "set dict/entry[.= 'port']/number ${fastx3::broker_port}",
-        "set dict/entry[.= 'rejectUnauthorized'] 'rejectUnauthorized'",
-        "set dict/entry[.= 'rejectUnauthorized']/const ${fastx3::broker_reject_unauthorized}",
-      ],
-    }
+  file { $fastx3::db_json:
+    ensure  => $fastx3::db_json_ensure,
+    owner   => $fastx3::service_user,
+    group   => $fastx3::service_group,
+    mode    => $fastx3::json_mode,
+    content => to_json($fastx3::db_configuration),
   }
   if $fastx3::manage_debug_options {
     file { $fastx3::debug_json:
