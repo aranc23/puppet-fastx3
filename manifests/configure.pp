@@ -183,6 +183,15 @@ class fastx3::configure {
     content => '',
     replace => false,
   }
+  file { $fastx3::permissions_store:
+    owner   => $fastx3::service_user,
+    group   => $fastx3::service_group,
+    mode    => $fastx3::json_mode,
+    content => to_json({
+      '_id'  => 'admin-group',
+      'data' => $fastx3::admin_groups,
+    })
+  }
   create_resources(
     'fastx_system_bookmark',
     $fastx3::system_bookmarks,
