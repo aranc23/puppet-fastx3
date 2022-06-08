@@ -187,10 +187,10 @@ class fastx3::configure {
     owner   => $fastx3::service_user,
     group   => $fastx3::service_group,
     mode    => $fastx3::json_mode,
-    content => to_json({
+    content => "${to_json({
       '_id'  => 'admin-group',
       'data' => $fastx3::admin_groups,
-    })
+    })}\n",
   }
   create_resources(
     'fastx_system_bookmark',
