@@ -1,0 +1,7 @@
+---
+fastx3::manage_repos: false
+fastx3::packages:
+  - fastx-server
+  - libcrypt-openssl-rsa-perl
+  - libcrypt-openssl-bignum-perl
+  - libcrypt-openssl-random-perl
