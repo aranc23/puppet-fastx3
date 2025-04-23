@@ -41,10 +41,14 @@
 #   full path to broker.json file used to configure cluster membership
 # @param db_json
 #   full path to db.json file used to configure cluster database
+# @param manage_service_user
+#   create user/group resources or not
 # @param service_user
 #   user services run as, used to create/modify directory permissions
 # @param service_group
 #   group of service user, used to create/modify directory permissions
+# @param service_user_home_directory
+#   when creating the user, use this is as home dir
 # @param admin_groups
 #   list of groups to grant admin access to
 # @param license_server
@@ -135,8 +139,10 @@ class fastx3
   Stdlib::Absolutepath $settings_json = "${fastx3::configdir}/settings.json",
   Stdlib::Absolutepath $broker_json = "${fastx3::configdir}/broker.json",
   Stdlib::Absolutepath $db_json = "${fastx3::configdir}/db.json",
+  Boolean $manage_service_user = false,
   String $service_user = 'fastx',
   String $service_group = 'fastx',
+  Stdlib::Absolutepath $service_user_home_directory = '/etc/fastx',
   Array[String] $admin_groups = ['root'],
   # license server
   Optional[Stdlib::Fqdn] $license_server = undef,
@@ -178,8 +184,8 @@ class fastx3
   contain fastx3::configure
   contain fastx3::service
   Class['::fastx3::repos']
-  -> Class['::fastx3::install']
   -> Class['::fastx3::users']
+  -> Class['::fastx3::install']
   -> Class['::fastx3::directories']
   -> Class['::fastx3::configure']
   ~> Class['::fastx3::service']
